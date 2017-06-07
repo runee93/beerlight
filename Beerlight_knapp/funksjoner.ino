@@ -1,38 +1,18 @@
 /*
-void oneByOne(int TID);
-void inOutTwoLeds(int TID);
-void inOutAll(int TID);
-void alternatingColors(int TID);
-void hueShiftAll(int TID);
-void randomColors(int TID);
+void inOutTwoLeds(unsigned int TID);
+void inOutAll(unsigned int TID);
+void alternatingColors(unsigned int TID);
+void hueShiftAll(unsigned int TID);
+void randomColors(unsigned int TID);
 void rgbLedRainbow(unsigned long cycleTime, int rainbowWidth);
-void inOutRED(int TID);
-void inOutGREEN(int TID);
-void inOutBLUE(int TID);
+void inOutRED(unsigned int TID);
+void inOutGREEN(unsigned int TID);
+void inOutBLUE(unsigned int TID);
 */
 
 
-void oneByOne(int TID){ // Fade in and fade out all outputs one at a time
-  unsigned char brightness;
-  unsigned long fadeTime = TID;
-  unsigned long loopTime = numOutputs*fadeTime*2;
-  unsigned long time = millis()-startTime;
-  unsigned long timer = time%loopTime;
-  unsigned long currentStep = timer%(fadeTime*2);
 
-  int activeLED = timer/(fadeTime*2);
-
-  if(currentStep <= fadeTime ){
-    brightness = currentStep*maxBrightness/fadeTime; ///fading in
-  }
-  else{
-    brightness = maxBrightness-(currentStep-fadeTime)*maxBrightness/fadeTime; ///fading out;
-  }
-  ShiftPWM.SetAll(0);
-  ShiftPWM.SetOne(activeLED, brightness);
-}
-
-void inOutTwoLeds(int TID){ // Fade in and out 2 outputs at a time
+void inOutTwoLeds(unsigned int TID){ // Fade in and out 2 outputs at a time
   unsigned long fadeTime = TID;
   unsigned long loopTime = numOutputs*fadeTime;
   unsigned long time = millis()-startTime;
@@ -47,7 +27,7 @@ void inOutTwoLeds(int TID){ // Fade in and out 2 outputs at a time
   ShiftPWM.SetOne(activeLED,maxBrightness-brightness);
 }
 
-void inOutAll(int TID){  // Fade in all outputs
+void inOutAll(unsigned int TID){  // Fade in all outputs
   unsigned char brightness;
   unsigned long fadeTime = TID;
   unsigned long time = millis()-startTime;
@@ -62,7 +42,7 @@ void inOutAll(int TID){  // Fade in all outputs
   ShiftPWM.SetAll(brightness);
 }
 
-void inOutRED(int TID){  // Fade in all red
+void inOutRED(unsigned int TID){  // Fade in all red
   unsigned char brightness;
   unsigned long fadeTime = TID;
   unsigned long time = millis()-startTime;
@@ -81,7 +61,7 @@ void inOutRED(int TID){  // Fade in all red
   ShiftPWM.SetRGB(4,brightness,0,0);
 }
 
-void inOutGREEN(int TID){  // Fade in all Gron
+void inOutGREEN(unsigned int TID){  // Fade in all Gron
   unsigned char brightness;
   unsigned long fadeTime = TID;
   unsigned long time = millis()-startTime;
@@ -100,7 +80,7 @@ void inOutGREEN(int TID){  // Fade in all Gron
   ShiftPWM.SetRGB(4,0,brightness,0);
 }
 
-void inOutBLUE(int TID){  // Fade in all bla
+void inOutBLUE(unsigned int TID){  // Fade in all bla
   unsigned char brightness;
   unsigned long fadeTime = TID;
   unsigned long time = millis()-startTime;
@@ -119,7 +99,7 @@ void inOutBLUE(int TID){  // Fade in all bla
   ShiftPWM.SetRGB(4,0,0,brightness);
 }
 
-void inOutFARGE(int TID,int FARGE){  // Fade in all FARGE
+void inOutFARGE(unsigned int TID,int FARGE){  // Fade in all FARGE
   unsigned char brightness;
   unsigned long fadeTime = TID;
   unsigned long time = millis()-startTime;
@@ -138,7 +118,7 @@ void inOutFARGE(int TID,int FARGE){  // Fade in all FARGE
   ShiftPWM.SetHSV(4,FARGE,255,brightness);
 }
 
-void alternatingColors(int TID){ // Alternate LED's in 6 different colors
+void alternatingColors(unsigned int TID){ // Alternate LED's in 6 different colors
   unsigned long holdTime = TID;
   unsigned long time = millis()-startTime;
   unsigned long shift = (time/holdTime)%6;
@@ -166,21 +146,13 @@ void alternatingColors(int TID){ // Alternate LED's in 6 different colors
   }
 }
 
-void hueShiftAll(int TID){  // Hue shift all LED's
+void hueShiftAll(long TID){  // Hue shift all LED's
   unsigned long cycleTime = TID;
   unsigned long time = millis()-startTime;
   unsigned long hue = (360*time/cycleTime)%360;
   ShiftPWM.SetAllHSV(hue, 255, 255); 
 }
 
-void randomColors(int TID){  // Update random LED to random color. Funky!
-  unsigned long updateDelay = TID;
-  static unsigned long previousUpdateTime;
-  if(millis()-previousUpdateTime > updateDelay){
-    previousUpdateTime = millis();
-    ShiftPWM.SetHSV(random(numRGBLeds),random(360),255,255);
-  }
-}
 
   void rgbLedRainbow(unsigned long cycleTime, int rainbowWidth){
   // Displays a rainbow spread over a few LED's (numRGBLeds), which shifts in hue. 
@@ -195,8 +167,8 @@ void randomColors(int TID){  // Update random LED to random color. Funky!
   }
 }
 
-int chaseColor(int TID, int HUE, int ledibruk){ //HUE 1000 ==random farger
- int numRGBleds=5;
+int chaseColor(unsigned int TID, int HUE, int ledibruk){ //HUE 1000 ==random farger
+ int numRGBLeds=5;
   int topp;
   unsigned char brightness;
   unsigned long fadeTime = TID;
@@ -206,26 +178,63 @@ int chaseColor(int TID, int HUE, int ledibruk){ //HUE 1000 ==random farger
   unsigned long currentStep = timer%(fadeTime*2);
 
   ShiftPWM.SetHSV(ledibruk,315,255,255);
-if(ledibruk==numRGBleds-1){
-  topp=1;
+  
+for(unsigned int led=0;led<numRGBLeds;led++){
+  ShiftPWM.SetHSV(led,105,255,255);
+  delay(1000);
+
 }
-else{
   
 }
 
-if(topp==0){
-  ledibruk=ledibruk+1;
-}
-else if(topp==1){
-  ledibruk=ledibruk-1;
-}
 
-else{
-  topp=0;
-}
-Serial.print("Ledibruk "); Serial.println(ledibruk); 
+void oppstartfunk(){
+
+  ShiftPWM.SetRGB(0, 255, 0, 0);
+  delay(forsink);
+  ShiftPWM.SetRGB(1, 255, 0, 0);
+  delay(forsink);
+  ShiftPWM.SetRGB(2, 255, 0, 0);
+  delay(forsink);
+  ShiftPWM.SetRGB(3, 255, 0, 0);
+  delay(forsink);
+  ShiftPWM.SetRGB(4, 255, 0, 0);
+  delay(forsink);
+  ShiftPWM.SetRGB(0, 0, 255, 0);
+  delay(forsink);
+  ShiftPWM.SetRGB(1, 0, 255, 0);
+  delay(forsink);
+  ShiftPWM.SetRGB(2, 0, 255, 0);
+  delay(forsink);
+  ShiftPWM.SetRGB(3, 0, 255, 0);
+  delay(forsink);
+  ShiftPWM.SetRGB(4, 0, 255, 0);
+  delay(forsink);
+  ShiftPWM.SetRGB(0, 0, 0, 255);
+  delay(forsink);
+  ShiftPWM.SetRGB(1, 0, 0, 255);
+  delay(forsink);
+  ShiftPWM.SetRGB(2, 0, 0, 255);
+  delay(forsink);
+  ShiftPWM.SetRGB(3, 0, 0, 255);
+  delay(forsink);
+  ShiftPWM.SetRGB(4, 0, 0, 255);
+  delay(forsink);
   
-  return ledibruk;
-
-
+/*  ShiftPWM.SetRGB(0, 0, 0, 0);
+  ShiftPWM.SetHSV(0,192,255,255);
+  delay(forsink);
+  ShiftPWM.SetRGB(1, 0, 0, 0);
+  ShiftPWM.SetHSV(1,32,255,255);
+  delay(forsink);
+  ShiftPWM.SetRGB(2, 0, 0, 0);
+  ShiftPWM.SetHSV(2,224,255,255);
+  delay(forsink);
+  ShiftPWM.SetRGB(3, 0, 0, 0);
+  ShiftPWM.SetHSV(3,64,255,255);
+  delay(forsink);
+  ShiftPWM.SetRGB(4, 0, 0, 0);
+  ShiftPWM.SetHSV(4,128,255,255);
+  delay(forsink);
+*/
 }

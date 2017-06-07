@@ -17,16 +17,13 @@ unsigned long startTime = 0; // start time for the chosen fading mode
 
 uint8_t modus=1;
 byte buttonPin = 2;
-byte klappInn= 12;
 
 int modusFunk(void);
-void klappFunk(void);
 
 void inOutTwoLeds(unsigned int TID);
 void inOutAll(unsigned int TID);
 void alternatingColors(unsigned int TID);
 void hueShiftAll(unsigned int TID);
-void randomColors(unsigned int TID);
 void rgbLedRainbow(unsigned long cycleTime, int rainbowWidth);
 void inOutRED(unsigned int TID);
 void inOutGREEN(unsigned int TID);
@@ -34,11 +31,10 @@ void inOutBLUE(unsigned int TID);
 void inOutFARGE(unsigned int TID, int FARGE); //Hue
 int chaseColor(unsigned int TID, int HUE, int ledibruk);
 void oppstartfunk();
-int forsink = 300;
+int forsink = 150;
 
 void setup() {
   pinMode(buttonPin, INPUT);
-  pinMode(klappInn, INPUT);
   Serial.begin(9600);
 
   ShiftPWM.SetAmountOfRegisters(numRegisters);
@@ -50,91 +46,59 @@ void setup() {
   delay(1000);
   oppstartfunk();
   delay(1000); //1500 gir smud overgang til rainbow 10000, 50
+  Serial.println("Modus 1");
 
 }
                                                                                            
 
 void loop() {
-//  if (digitalRead(buttonPin) == 1)
-//    modusFunk();
-  if (digitalRead(klappInn) == 1)
-    klappFunk();
-    
-Serial.print("Modus: ");
-Serial.println(modus);  
+  if (digitalRead(buttonPin) == 1)
+    modusFunk();
+
+      
   if (modus == 0){
   ShiftPWM.SetAll(0);
   while(digitalRead(buttonPin)); delay(1);
   }
 
   else if (modus == 1){
-    rgbLedRainbow(10000, 50); //10000,50 gir smud overgang med oppstartsfunk
-
+    rgbLedRainbow(100000, 5);
   }
   else if (modus == 2){
-    rgbLedRainbow(100000, 50);
-   // delay(10); //klapp funker dårlig med denne, men tror lyset blir penere?
+    rgbLedRainbow(100000, 50); 
   }
   else if (modus == 3)
-    rgbLedRainbow(100000, 5);
+    rgbLedRainbow(100000, 50);
 
   else if (modus == 4)
-    hueShiftAll(50000);
+    rgbLedRainbow(1000, 50);
 
   else if (modus == 5)
+    hueShiftAll(50000);
+        
+  else if (modus == 6)
+    hueShiftAll(1000000);
+    
+  else if (modus == 7)
     alternatingColors(1000);
   
   
-  else if (modus == 6)
-    alternatingColors(500);
-
-  else if (modus == 7)
-    alternatingColors(250);
-
   else if (modus == 8)
-    randomColors(1000);
+    alternatingColors(10000);
   
   else if (modus == 9)
-    randomColors(500);
-
-  else if (modus == 10)
-  randomColors(250);
-  
-  else if (modus == 11)
-  inOutTwoLeds(1000);
-
-  else if (modus == 12)
   inOutRED(10000);
   
-  else if (modus == 13)
+  else if (modus == 10)
   inOutGREEN(10000);
 
-  else if (modus == 14)
+  else if (modus == 11)
   inOutBLUE(10000);
   
-  else if (modus == 15)
+  else if (modus == 12)
   inOutFARGE(10000, 32);
 
-  else if (modus == 16)
-  inOutFARGE(10000, 224);
 
-  else if (modus == 17)
-  inOutFARGE(1000, 210);
-
-  else if (modus == 18)
-  inOutFARGE(1000, 240);
-
-  else if (modus == 19)
-  inOutFARGE(1000, 270);
-
-  else if (modus == 20)
-  inOutFARGE(1000, 300);
-
-  else if (modus == 21)
-  inOutFARGE(1000, 330);
-
-  else if (modus == 22)
-  inOutFARGE(1000, 360);
 
 
   else {
